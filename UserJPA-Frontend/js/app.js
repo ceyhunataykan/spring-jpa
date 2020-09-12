@@ -71,7 +71,7 @@ $(document).ready(function () {
 
     $.kayitDuzenle = function (id) {
 
-        $.getJSON("http://localhost:8080/list/" + id, function (data) {
+        $.getJSON("http://localhost:8080/find-by-id/" + id, function (data) {
             console.log("İşlem Başarılı");
             var gelen = data;
             $(gelen).each(function () {
