@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class UserExceptionController {
-    @ExceptionHandler(value = UserNotFoundException.class)
-    public ResponseEntity<Object> exception(UserNotFoundException exception) {
+public class GenericExceptionController {
+    @ExceptionHandler(value = GenericNotFoundException.class)
+    public ResponseEntity<Object> exception(GenericNotFoundException exception) {
         return new ResponseEntity<>("false", HttpStatus.NOT_FOUND);
     }
 }

@@ -1,7 +1,7 @@
 package com.ceyhunataykan.UserJPA.controller;
 
 import com.ceyhunataykan.UserJPA.entity.User;
-import com.ceyhunataykan.UserJPA.exception.UserNotFoundException;
+import com.ceyhunataykan.UserJPA.exception.GenericNotFoundException;
 import com.ceyhunataykan.UserJPA.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +16,18 @@ import java.util.Optional;
 @RestController
 public class UserController {
     @Autowired
-    public UserService userService;
+    private UserService userService;
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> getAll() {
-        return ResponseEntity.ok(userService.getAll());
+        return  new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/find-by-id/{id}")
-    public Optional<User> getFindById(@PathVariable(value = "id") Integer id){
+    public Optional<User> getFindById(@PathVariable Integer id){
         Optional<User> user = userService.getFindById(id);
         if (!user.isPresent()){
-            throw new UserNotFoundException();
+            throw new GenericNotFoundException();
         }
         return user;
     }
@@ -39,24 +39,24 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> update(@RequestBody User user, @PathVariable Integer id) throws UserNotFoundException {
+    public ResponseEntity<Object> update(@RequestBody User user, @PathVariable Integer id) throws GenericNotFoundException {
         Optional<User> userOptional = userService.getFindById(id);
         if (userOptional.isPresent()) {
             user.setId(id);
             userService.save(user);
         } else {
-            throw new UserNotFoundException();
+            throw new GenericNotFoundException();
         }
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id) throws UserNotFoundException {
+    public ResponseEntity<Object> delete(@PathVariable Integer id) throws GenericNotFoundException {
         Optional<User> user = userService.getFindById(id);
         if (user.isPresent()) {
             userService.delete(id);
         } else {
-            throw new UserNotFoundException();
+            throw new GenericNotFoundException();
         }
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
