@@ -4,11 +4,9 @@ import java.util.List;
 
 import com.ceyhunataykan.UserJPA.dto.EmployeeDTO;
 import com.ceyhunataykan.UserJPA.dto.EmployeeDTOService;
-import com.ceyhunataykan.UserJPA.dto.EmployeeMapper;
 import com.ceyhunataykan.UserJPA.entity.Employee;
 import com.ceyhunataykan.UserJPA.exception.GenericNotFoundException;
 import com.ceyhunataykan.UserJPA.service.EmployeeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,18 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
-
-    private EmployeeMapper employeeMapper;
-
-    private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
-
-    @PutMapping("/dto/update/{id}")
-    public ResponseEntity<EmployeeDTO> updateDTO(@RequestBody EmployeeDTO empDTO, @PathVariable Integer id){
-        Employee t = EmployeeMapper.MAPPER.toTarget(empDTO);
-        t.setEmployeeId(id);
-        employeeService.save(t);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(empDTO);
-    }
+    @Autowired
+    private EmployeeDTOService employeeDTOService;
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> getAll() {
@@ -59,6 +47,11 @@ public class EmployeeController {
     public ResponseEntity<Object> update(@RequestBody Employee employee, @PathVariable Integer id) {
         employeeService.update(employee, id);
         return new ResponseEntity<>("true", HttpStatus.OK);
+    }
+    
+    @PutMapping("/dto/update/{id}")
+    public ResponseEntity<Employee> updateDTO(@RequestBody EmployeeDTO empDTO, @PathVariable Integer id){
+        return new ResponseEntity<>(employeeDTOService.update_tc(empDTO,id), HttpStatus.OK);
     }
 
     @DeleteMapping("/employee/delete/{id}")
