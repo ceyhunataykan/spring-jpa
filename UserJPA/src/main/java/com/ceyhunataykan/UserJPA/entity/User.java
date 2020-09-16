@@ -9,7 +9,6 @@ import java.io.Serializable;
 @Data
 @Entity
 public class User implements Serializable {
-
     @Id
     @Nullable
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -29,7 +29,7 @@ public class Employee {
     @Column(length = 11)
     private String employeeTC;
 
-    @OneToOne(cascade=CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private Address address;
 }

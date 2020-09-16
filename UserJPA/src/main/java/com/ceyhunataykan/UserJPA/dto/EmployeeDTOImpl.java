@@ -18,14 +18,13 @@ public class EmployeeDTOImpl implements EmployeeDTOService {
 
         Employee employee = modelMapper.map(employeeDTO, Employee.class);
         employee.setEmployeeTC(employeeDTO.getEmployeeTC());
-
         Employee oldEmp = employeeService.getFindById(id);
-        if(oldEmp != null){
+        if (oldEmp != null) {
             employee.setEmployeeId(id);
             employee.setEmployeeName(oldEmp.getEmployeeName());
             employee.setAddress(oldEmp.getAddress());
             employeeService.save(employee);
-        }else {
+        } else {
             throw new GenericNotFoundException();
         }
         return employee;

@@ -27,10 +27,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void update(Employee employee, Integer id) {
         Employee optionalEmployee = getFindById(id);
-        if (!(optionalEmployee == null)){
+        if (!(optionalEmployee == null)) {
             employee.setEmployeeId(id);
             employeeRepository.save(employee);
-        }else {
+        } else {
             throw new GenericNotFoundException();
         }
     }
@@ -40,15 +40,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee optionalEmployee = getFindById(id);
         if (!(optionalEmployee == null)) {
             employeeRepository.deleteById(id);
-        }else {
+        } else {
             throw new GenericNotFoundException();
         }
     }
 
     @Override
     public Employee getFindById(Integer id) {
-        Optional<Employee> optionalEmployee =  employeeRepository.findById(id);
-        if(!optionalEmployee.isPresent()) {
+        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
+        if (!optionalEmployee.isPresent()) {
             throw new GenericNotFoundException();
         }
         return optionalEmployee.get();

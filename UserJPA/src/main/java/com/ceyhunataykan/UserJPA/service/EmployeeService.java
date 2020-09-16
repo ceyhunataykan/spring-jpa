@@ -5,9 +5,9 @@ import com.ceyhunataykan.UserJPA.entity.Employee;
 import java.util.List;
 
 public interface EmployeeService {
-    public List<Employee> getAll();
-    public Employee save(Employee employee);
-    public void update(Employee employee, Integer id);
-    public void delete(Integer id);
-    public Employee getFindById(Integer id);
+    List<Employee> getAll();
+    Employee save(Employee employee);
+    void update(Employee employee, Integer id);
+    void delete(Integer id);
+    Employee getFindById(Integer id);
 }

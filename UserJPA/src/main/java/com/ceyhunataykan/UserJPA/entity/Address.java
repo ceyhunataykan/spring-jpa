@@ -13,8 +13,8 @@ import lombok.Data;
 @Data
 public class Address {
     @Id
-    @SequenceGenerator(initialValue=1, name="address_seq", sequenceName="address_sequence")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="address_seq")
+    @SequenceGenerator(initialValue = 1, name = "address_seq", sequenceName = "address_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
     @Column
     private int addressid;
 
