@@ -5,12 +5,15 @@ import com.ceyhunataykan.UserJPA.exception.GenericNotFoundException;
 import com.ceyhunataykan.UserJPA.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -20,44 +23,40 @@ public class UserController {
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> getAll() {
-        return  new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/find-by-id/{id}")
-    public Optional<User> getFindById(@PathVariable Integer id){
-        Optional<User> user = userService.getFindById(id);
-        if (!user.isPresent()){
-            throw new GenericNotFoundException();
-        }
-        return user;
+    public ResponseEntity<User> getFindById(@PathVariable Integer id) {
+        return new ResponseEntity<>(userService.getFindById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/list/download")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "users.xlsx";
+        InputStreamResource file = new InputStreamResource(userService.excelLoad());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Object> add(@RequestBody User user) {
-        userService.save(user);
-        return new ResponseEntity<>("true", HttpStatus.OK);
+    public ResponseEntity<User> add(@RequestBody User user) {
+        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Object> update(@RequestBody User user, @PathVariable Integer id) throws GenericNotFoundException {
-        Optional<User> userOptional = userService.getFindById(id);
-        if (userOptional.isPresent()) {
-            user.setId(id);
-            userService.save(user);
-        } else {
-            throw new GenericNotFoundException();
-        }
+    public ResponseEntity<Object> update(@RequestBody User user, @PathVariable Integer id) {
+        userService.update(user, id);
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Integer id) throws GenericNotFoundException {
-        Optional<User> user = userService.getFindById(id);
-        if (user.isPresent()) {
-            userService.delete(id);
-        } else {
-            throw new GenericNotFoundException();
-        }
+        userService.delete(id);
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
+
 }

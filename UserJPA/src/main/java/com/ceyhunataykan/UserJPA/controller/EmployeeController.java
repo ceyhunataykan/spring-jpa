@@ -61,7 +61,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employee/delete/{id}")
-    public ResponseEntity<Object> deleteEmployee(@PathVariable Integer id) throws GenericNotFoundException {
+    public ResponseEntity<Object> delete(@PathVariable Integer id) throws GenericNotFoundException {
         employeeService.delete(id);
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
