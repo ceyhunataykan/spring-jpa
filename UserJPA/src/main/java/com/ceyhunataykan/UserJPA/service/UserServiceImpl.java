@@ -2,12 +2,15 @@ package com.ceyhunataykan.UserJPA.service;
 
 import com.ceyhunataykan.UserJPA.entity.User;
 import com.ceyhunataykan.UserJPA.exception.GenericNotFoundException;
-import com.ceyhunataykan.UserJPA.helper.ExcelHelper;
+import com.ceyhunataykan.UserJPA.helper.ExcelDownload;
+import com.ceyhunataykan.UserJPA.helper.ExcelUpload;
 import com.ceyhunataykan.UserJPA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,10 +60,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ByteArrayInputStream excelLoad() {
+    public ByteArrayInputStream excelOutput() {
         List<User> users = userRepository.findAll();
 
-        ByteArrayInputStream in = ExcelHelper.usersToExcel(users);
+        ByteArrayInputStream in = ExcelDownload.usersToExcel(users);
         return in;
+    }
+
+    @Override
+    public void excelInput(MultipartFile file) {
+        try {
+            List<User> tutorials = ExcelUpload.excelToTutorials(file.getInputStream());
+            userRepository.saveAll(tutorials);
+        } catch (IOException e) {
+            throw new RuntimeException("fail to store excel data: " + e.getMessage());
+        }
     }
 }

@@ -1,10 +1,5 @@
 package com.ceyhunataykan.UserJPA.helper;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.List;
-
 import com.ceyhunataykan.UserJPA.entity.User;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,9 +7,14 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelHelper {
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+
+public class ExcelDownload {
     public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    static String[] HEADERs = { "Id", "Ad Soyad", "Email", "Tel" };
+    static String[] HEADERs = {"Id", "Ad Soyad", "Email", "Tel"};
     static String SHEET = "Users";
 
     public static ByteArrayInputStream usersToExcel(List<User> users) {
@@ -35,7 +35,7 @@ public class ExcelHelper {
                 Row row = sheet.createRow(rowIdx++);
 
                 row.createCell(0).setCellValue(user.getId());
-                row.createCell(1).setCellValue(user.getAd()+ " " +user.getSoyad());
+                row.createCell(1).setCellValue(user.getAd() + " " + user.getSoyad());
                 row.createCell(2).setCellValue(user.getEmail());
                 row.createCell(3).setCellValue(user.getTel());
             }

@@ -2,6 +2,7 @@ package com.ceyhunataykan.UserJPA.service;
 
 import com.ceyhunataykan.UserJPA.entity.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -18,5 +19,7 @@ public interface UserService {
 
     User getFindById(Integer id);
 
-    ByteArrayInputStream excelLoad();
+    ByteArrayInputStream excelOutput();
+
+    void excelInput(MultipartFile file);
 }
